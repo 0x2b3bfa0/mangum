@@ -197,12 +197,9 @@ class HTTPCycle:
                 mimetype, _ = cgi.parse_header(
                     self.response["headers"].get("content-type", "text/plain")
                 )
-                if (
-                    mimetype not in self.text_mime_types
-                    and not mimetype.startswith("text/")
-                ) or self.response["headers"].get("content-encoding") in ["gzip", "br"]:
-                    body = base64.b64encode(body)
-                    self.response["isBase64Encoded"] = True
+
+                body = base64.b64encode(body)
+                self.response["isBase64Encoded"] = True
 
                 self.response["body"] = body.decode()
                 self.state = HTTPCycleState.COMPLETE
